@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 public class ImportFile {
-    public static void importCsvFile(Context context, SQLiteOpenHelper helper, String path){
+    public static void importCsvFile(Context context, SQLiteOpenHelper helper, String path, String tableName){
         AssetManager am = context.getResources().getAssets();
         try {
             InputStream is = am.open("test/" + path);
@@ -30,7 +30,7 @@ public class ImportFile {
                 }
                 data.add(row);
             }
-            SQLiteHelper.insertDB(context, helper, "person_table", data);
+            SQLiteHelper.insertDB(helper, tableName, data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class ImportFile {
             return false;
         }
         
-        public static void insertDB( Context context, SQLiteOpenHelper helper, String tableName,List<List<String>> data) throws Exception{
+        public static void insertDB( SQLiteOpenHelper helper, String tableName,List<List<String>> data) throws Exception{
             SQLiteDatabase db = helper.getWritableDatabase();
             if(isTableExists(db, tableName)){
                 List<String> columnName = data.get(0);
